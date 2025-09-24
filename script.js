@@ -1,5 +1,5 @@
 // Конфигурация для Google Apps Script
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxza5sDlcb4b70ZpFTOw5TLIuScLP63ewjYAp_qTsplXT-IqgZQQSlsYCTixMaXOjYr/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZCRB99XVjp0v2HdbirOuOMPw_bWGUdtPymo3xBb-OOvzdHLnemHeW-CEkzEuTlswB/exec";
 
 // DOM элементы
 const form = document.getElementById('bookingForm');
@@ -168,3 +168,4 @@ document.getElementById('agree').addEventListener('change', function() {
         document.getElementById('agreeError').style.display = 'none';
     }
 });
+
