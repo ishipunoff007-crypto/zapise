@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Автосервис на Панина - профессиональный ремонт автомобилей</title>
+    <title>MagShine SERVICE на Панина - профессиональный ремонт автомобилей</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,7 +11,7 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <h1 class="logo">АВТОСЕРВИС НА ПАНИНА</h1>
+                <h1 class="logo">MAGSHINE SERVICE76</h1>
                 <p class="tagline">Профессиональный ремонт и обслуживание автомобилей с гарантией качества</p>
                 <div class="floating-elements">
                     <i class="floating-element fas fa-tools"></i>
@@ -26,31 +26,78 @@
     <section class="form-section">
         <div class="container">
             <h2 class="form-title">Записаться на обслуживание</h2>
-            <div class="success-message" id="successMessage">
-                <i class="fas fa-check-circle"></i> Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.
+            
+            <!-- Сообщение о приостановке записи -->
+            <div class="booking-disabled-message" id="bookingDisabledMessage" style="display: none;">
+                <i class="fas fa-pause-circle"></i> 
+                <span id="pauseMessageText">Запись временно приостановлена. Приносим извинения за неудобства.</span>
             </div>
 
+            <!-- Сообщение об успехе -->
+            <div class="success-message" id="successMessage" style="display: none;">
+                <i class="fas fa-check-circle"></i> 
+                <span id="successMessageText">Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.</span>
+            </div>
+
+            <!-- Сообщение об ошибке -->
+            <div class="error-message global-error" id="globalError" style="display: none;">
+                <i class="fas fa-exclamation-circle"></i> 
+                <span id="errorMessageText">Произошла ошибка. Пожалуйста, попробуйте позже.</span>
+            </div>
+
+            <!-- Индикатор загрузки -->
+            <div class="loading-indicator" id="loadingIndicator" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i> Загрузка доступных дат...
+            </div>
+
+            <!-- Форма записи -->
             <form class="booking-form" id="bookingForm">
                 <div class="form-group">
-                    <label for="name">Ваше имя</label>
+                    <label for="name">Ваше имя *</label>
                     <input type="text" id="name" class="form-control" placeholder="Введите ваше имя" required>
-                    <div class="error-message" id="nameError">Пожалуйста, введите ваше имя</div>
+                    <div class="error-message field-error" id="nameError">Пожалуйста, введите ваше имя</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Номер телефона</label>
+                    <label for="phone">Номер телефона *</label>
                     <input type="tel" id="phone" class="form-control" placeholder="+7 (999) 999-99-99" required>
-                    <div class="error-message" id="phoneError">Пожалуйста, введите корректный номер телефона</div>
+                    <div class="error-message field-error" id="phoneError">Пожалуйста, введите корректный номер телефона</div>
+                </div>
+
+                <!-- Блок выбора даты -->
+                <div class="form-group">
+                    <label>Выберите дату *</label>
+                    <div class="calendar-header">
+                        <button type="button" class="date-nav-btn" id="prevMonthBtn" title="Предыдущий месяц">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="month-display" id="monthDisplay">
+                            <!-- Месяц и год будут обновляться через JS -->
+                        </div>
+                        <button type="button" class="date-nav-btn" id="nextMonthBtn" title="Следующий месяц">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="calendar-container">
+                        <div class="week-days">
+                            <div>Пн</div>
+                            <div>Вт</div>
+                            <div>Ср</div>
+                            <div>Чт</div>
+                            <div>Пт</div>
+                            <div>Сб</div>
+                            <div>Вс</div>
+                        </div>
+                        <div class="calendar-grid" id="calendarGrid">
+                            <!-- Календарь будет генерироваться через JavaScript -->
+                        </div>
+                    </div>
+                    <div class="error-message field-error" id="dateError">Пожалуйста, выберите дату</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="date">Дата записи</label>
-                    <input type="date" id="date" class="form-control" required>
-                    <div class="error-message" id="dateError">Пожалуйста, выберите дату</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="service">Выберите услугу</label>
+                    <label for="service">Выберите услугу *</label>
                     <select id="service" class="form-control" required>
                         <option value="">-- Выберите услугу --</option>
                         <option value="Компьютерная диагностика">Компьютерная диагностика</option>
@@ -61,22 +108,45 @@
                         <option value="Эндоскопия">Эндоскопия</option>
                         <option value="Другое">Другое</option>
                     </select>
-                    <div class="error-message" id="serviceError">Пожалуйста, выберите услугу</div>
+                    <div class="error-message field-error" id="serviceError">Пожалуйста, выберите услугу</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="carModel">Модель автомобиля *</label>
+                    <input type="text" id="carModel" class="form-control" placeholder="Например: Toyota Camry" required>
+                    <div class="error-message field-error" id="carModelError">Пожалуйста, укажите модель автомобиля</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="comments">Комментарий (необязательно)</label>
+                    <textarea id="comments" class="form-control" placeholder="Дополнительная информация о вашем автомобиле или проблеме..." rows="3"></textarea>
                 </div>
 
                 <div class="checkbox-group">
                     <input type="checkbox" id="agree" required>
-                    <label for="agree">Я согласен на обработку моих персональных данных</label>
+                    <label for="agree">Я согласен на обработку моих персональных данных *</label>
                 </div>
-                <div class="error-message" id="agreeError">Необходимо ваше согласие</div>
+                <div class="error-message field-error" id="agreeError">Необходимо ваше согласие</div>
 
-                <button type="submit" class="btn-primary">Записаться</button>
+                <button type="submit" class="btn-primary" id="submitBtn" disabled>
+                    <span class="btn-text">Записаться</span>
+                    <span class="btn-loading" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Отправка...
+                    </span>
+                </button>
             </form>
 
             <div class="contact-buttons">
                 <a href="tel:+79301141692" class="contact-btn btn-call"><i class="fas fa-phone"></i> Позвонить</a>
                 <a href="https://wa.me/79301141692" class="contact-btn btn-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
                 <a href="https://t.me/servispanina" class="contact-btn btn-telegram" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+            </div>
+
+            <!-- Ссылка на админ-панель (малозаметная) -->
+            <div class="admin-link">
+                <a href="admin.html" class="admin-access-link">
+                    <i class="fas fa-cog"></i> Панель управления
+                </a>
             </div>
         </div>
     </section>
@@ -96,3 +166,8 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
