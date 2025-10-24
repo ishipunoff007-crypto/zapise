@@ -1,7 +1,7 @@
 // Конфигурация для Google Apps Script
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZCRB99XVjp0v2HdbirOuOMPw_bWGUdtPymo3xBb-OOvzdHLnemHeW-CEkzEuTlswB/exec";
 
-const STATUS_URL = "https://raw.githubusercontent.com/ishipunoff007-crypto/Re/main/booking-status.json";
+const STATUS_URL = "https://raw.githubusercontent.com/ishipunoff007-crypto/zapise/main/booking-status.json";
 
 // DOM элементы
 const form = document.getElementById('bookingForm');
@@ -625,6 +625,7 @@ function hideLoading() {
     updateSubmitButton();
     submitButton.innerHTML = '<span class="btn-text">Записаться</span>';
 }
+
 
 
 
